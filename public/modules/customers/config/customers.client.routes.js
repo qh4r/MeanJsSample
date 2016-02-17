@@ -13,6 +13,10 @@ angular.module('customers').config(['$stateProvider',
 			url: '/customers/create',
 			templateUrl: 'modules/customers/views/create-customer.client.view.html'
 		}).
+		state('modalCustomers', {
+			url: '/customers/modal',
+			templateUrl: 'modules/customers/views/list-customers-modal.html'
+		}).
 		state('viewCustomer', {
 			url: '/customers/:customerId',
 			templateUrl: 'modules/customers/views/view-customer.client.view.html'

@@ -21,8 +21,9 @@
     <br />
     <div class="list-group">
         <div data-ng-repeat="customer in customersCtrl.customers |
-        filter: customersCtrl.filterCustomers(searchText)" class="col-sm-6 col-md-4">
-            <a data-ng-href="#!/customers/{{customer._id}}" class="list-group-item">
+        filter: customersCtrl.filterCustomers(searchText)" class="col-sm-6 col-md-4 list-item-margin">
+            <a data-ng-click="customersCtrl.modelUpdate('lg', customer)" class="list-group-item">
+                <!--data-ng-href="#!/customers/{{customer._id}}"-->
                 <h4 class="custom-profile text-center">
                     <i class="glyphicon glyphicon-user"></i>
                 </h4>
@@ -37,19 +38,6 @@
                 </div>
             </a>
         </div>
-        <!--<a data-ng-repeat="customer in customersCtrl.customers" data-ng-href="#!/customers/{{customer._id}}" class="list-group-item">-->
-        <!--<small class="list-group-item-text">-->
-        <!--Posted on-->
-        <!--<span data-ng-bind="customer.created | date:'medium'"></span>-->
-        <!--by-->
-        <!--<span data-ng-bind="customer.user.displayName"></span>-->
-        <!--</small>-->
-        <!--<h4 class="list-group-item-heading">-->
-        <!--<span data-ng-bind="customer.firstName"></span>-->
-        <!--<span data-ng-bind="customer.surname"></span>-->
-        <!--</h4>-->
-        <!--<span data-ng-bind="customer.email"/>-->
-        <!--</a>-->
     </div>
     <div class="alert alert-warning text-center" data-ng-hide="!customers.$resolved || customers.length">
         No Customers yet, why don't you <a href="/#!/customers/create">create one</a>?

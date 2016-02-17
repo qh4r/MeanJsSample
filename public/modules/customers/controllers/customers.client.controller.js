@@ -1,8 +1,8 @@
 'use strict';
 var customersApp = angular.module('customers');
 // Customers controller
-customersApp.controller('CustomersController', ['$scope', '$stateParams', 'Authentication', 'Customers',
-    function ($scope, $stateParams, Authentication, Customers) {
+customersApp.controller('CustomersController', ['$scope', '$stateParams', 'Authentication', 'Customers', '$modal', '$log',
+    function ($scope, $stateParams, Authentication, Customers, $modal, $log) {
         this.authentication = Authentication;
 
 
@@ -19,18 +19,41 @@ customersApp.controller('CustomersController', ['$scope', '$stateParams', 'Authe
                 customerId: $stateParams.customerId
             });
         };
+
+        this.modelUpdate = function (size, customer) {
+
+            var modalInstance = $modal.open({
+                templateUrl: 'modules/customers/views/edit-customer.client.view.html',
+                controller:  function ($scope, $modalInstance, customer) {
+                    console.log(customer)
+                    $scope.customer = customer;
+                },
+                size: size,
+                resolve: {
+                    customer: function () {
+                        return customer;
+                    }
+                }
+            });
+            modalInstance.result.then(function (customer) {
+                $scope.selected = customer;
+            }, function () {
+                $log.info('Modal dismissed at: ' + new Date());
+            });
+        };
+
     }
 ]);
 
-customersApp.controller('CustomersCreateController', ['$scope', 'Customers',
-    function ($scope, Customers) {
-    }
-]);
-
-customersApp.controller('CustomersEditController', ['$scope', 'Customers',
-    function ($scope, Customers) {
-    }
-]);
+//customersApp.controller('CustomersCreateController', ['$scope', 'Customers',
+//    function ($scope, Customers) {
+//    }
+//]);
+//
+//customersApp.controller('CustomersEditController', ['$scope', 'Customers',
+//    function ($scope, Customers) {
+//    }
+//]);
 
         //// Create new Customer
         //$scope.create = function () {
