@@ -7,6 +7,12 @@ customersApp.controller('CustomersController', ['$scope', '$stateParams', 'Authe
 
 
             this.customers = Customers.query();
+            this.filterCustomers = function(search){
+                return function(val) {
+                    return !search ? val : (val.firstName.indexOf(search) > -1)
+                    || (val.surname.indexOf(search)>-1) ? val : undefined;
+                }
+            };
 
         $scope.findOne = function () {
             $scope.customer = Customers.get({
