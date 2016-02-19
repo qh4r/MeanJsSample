@@ -27,6 +27,18 @@ customersApp.controller('CustomersController', ['$scope', '$stateParams', 'Authe
                 controller:  function ($scope, $modalInstance, customer) {
                     console.log(customer)
                     $scope.customer = customer;
+                    this.ok = function(){
+                        var customer = $scope.customer;
+                        customer.$update(function () {
+                            $location.path('customers/' + customer._id);
+                        }, function (errorResponse) {
+                            $scope.error = errorResponse.data.message;
+                        });
+                        $modalInstance.close();
+                    }
+                    this.cancel = function(){
+                        $modalInstance.close();
+                    }
                 },
                 size: size,
                 resolve: {
@@ -35,6 +47,7 @@ customersApp.controller('CustomersController', ['$scope', '$stateParams', 'Authe
                     }
                 }
             });
+
             modalInstance.result.then(function (customer) {
                 $scope.selected = customer;
             }, function () {
@@ -49,11 +62,12 @@ customersApp.controller('CustomersController', ['$scope', '$stateParams', 'Authe
 //    function ($scope, Customers) {
 //    }
 //]);
-//
-//customersApp.controller('CustomersEditController', ['$scope', 'Customers',
-//    function ($scope, Customers) {
-//    }
-//]);
+
+customersApp.controller('CustomersUpdateController', ['$scope', '$modal', 'Customers',
+    function ($scope, $modal, Customers) {
+
+    }
+]);
 
         //// Create new Customer
         //$scope.create = function () {
