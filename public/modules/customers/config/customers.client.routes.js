@@ -9,21 +9,21 @@ angular.module('customers').config(['$stateProvider',
 			url: '/customers',
 			templateUrl: 'modules/customers/views/list-customers.client.view.html'
 		}).
-		state('createCustomer', {
-			url: '/customers/create',
-			templateUrl: 'modules/customers/views/create-customer.client.view.html'
-		}).
-		state('modalCustomers', {
+		//state('createCustomer', {
+		//	url: '/customers/create',
+		//	templateUrl: 'modules/customers/views/create-customer.client.view.html'
+		//}).
+		state('customersListTemplate', {
 			url: '/customers/modal',
-			templateUrl: 'modules/customers/views/list-customers-modal.html'
-		}).
-		state('viewCustomer', {
-			url: '/customers/:customerId',
-			templateUrl: 'modules/customers/views/view-customer.client.view.html'
-		}).
-		state('editCustomer', {
-			url: '/customers/:customerId/edit',
-			templateUrl: 'modules/customers/views/edit-customer.client.view.html'
-		});
+			templateUrl: 'modules/customers/views/customers-list-template.html',
+		})
+		//state('viewCustomer', {
+		//	url: '/customers/:customerId',
+		//	templateUrl: 'modules/customers/views/view-customer.client.view.html'
+		//}).
+		//state('editCustomer', {
+		//	url: '/customers/:customerId/edit',
+		//	templateUrl: 'modules/customers/views/edit-customer.client.view.html'
+		//});
 	}
 ]);

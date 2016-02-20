@@ -28,7 +28,7 @@ customersApp.controller('CustomersController', ['$scope', '$stateParams', 'Authe
                     //console.log(customer)
                     $scope.customer = customer;
                     $scope.ok = function (formValid) {
-                        if(formValid) {
+                        if (formValid) {
                             $modalInstance.close($scope.customer);
                         }
                     }
@@ -72,6 +72,17 @@ customersApp.controller('CustomersUpdateController', ['$scope', '$modal', 'Custo
 
     }
 ]);
+
+customersApp.directive('customersList', [function () {
+    return {
+        restrict: 'E',
+        transclude: true,
+        templateUrl: 'modules/customers/views/customers-list-template.html',
+        link: function(scope, element, attrs){
+
+        }
+    }
+}]);
 
 //// Create new Customer
 //$scope.create = function () {

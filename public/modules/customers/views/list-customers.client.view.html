@@ -18,28 +18,10 @@
             </button>
         </div>
     </div>
-    <br />
-    <div class="list-group">
-        <div data-ng-repeat="customer in customersCtrl.customers |
-        filter: customersCtrl.filterCustomers(searchText)" class="col-sm-6 col-md-4 list-item-margin">
-            <a data-ng-click="customersCtrl.modelUpdate('lg', customer)" class="list-group-item">
-                <!--data-ng-href="#!/customers/{{customer._id}}"-->
-                <h4 class="custom-profile text-center">
-                    <i class="glyphicon glyphicon-user"
-                       ng-class="{'text-primary' : customer.referred, 'text-danger': !customer.referred}"></i>
-                </h4>
+    <br/>
+    <customers-list>
 
-                <div class="row">
-                    <div class="col-xs-10 col-xs-offset-1">
-                        <h4>{{customer.firstName}} {{customer.surname}}</h4>
-                        <small class="list-group-item-text text-muted">
-                            <span data-ng-bind="customer.created | date:'medium'"></span>
-                        </small>
-                    </div>
-                </div>
-            </a>
-        </div>
-    </div>
+    </customers-list>
     <div class="alert alert-warning text-center" data-ng-hide="!customers.$resolved || customers.length">
         No Customers yet, why don't you <a href="/#!/customers/create">create one</a>?
     </div>
