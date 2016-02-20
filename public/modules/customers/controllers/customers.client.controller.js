@@ -27,9 +27,10 @@ customersApp.controller('CustomersController', ['$scope', '$stateParams', 'Authe
                 controller: function ($scope, $modalInstance, customer) {
                     //console.log(customer)
                     $scope.customer = customer;
-                    $scope.ok = function () {
-
-                        $modalInstance.close($scope.customer);
+                    $scope.ok = function (formValid) {
+                        if(formValid) {
+                            $modalInstance.close($scope.customer);
+                        }
                     }
                     $scope.cancel = function () {
                         $modalInstance.dismiss('back');

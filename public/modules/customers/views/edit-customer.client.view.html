@@ -1,9 +1,9 @@
 <section data-ng-controller="CustomersUpdateController as customersUpdateController">
     <div class="modal-header">
-        <h3 class="modal-title">Edit Customer</h3>
+        <h3 class="modal-title">Update {{customer.firstName}} {{customer.surname}}</h3>
     </div>
     <div class="modal-body">
-        <form>
+        <form name="updateCustomerForm">
             <fieldset>
                 <div class="row">
                     <div class="form-group">
@@ -14,7 +14,7 @@
                     </div>
                     <div class="col-sm-6 text-center">
                         <i class="glyphicon glyphicon-user custom-profile"
-                           ng-class="{'text-primary' : referred, 'text-danger': !referred}"></i>
+                           ng-class="{'text-primary' : customer.referred, 'text-danger': !customer.referred}"></i>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
@@ -22,14 +22,14 @@
 
                             <div class="controls">
                                 <input type="text" data-ng-model="customer.firstName" id="firstName"
-                                       class="form-control">
+                                       class="form-control" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label" for="surname">Surname</label>
 
                             <div class="controls">
-                                <input type="text" data-ng-model="customer.surname" id="surname" class="form-control">
+                                <input type="text" data-ng-model="customer.surname" id="surname" class="form-control" required>
                             </div>
                         </div>
                         <div class="form-group">
@@ -108,10 +108,10 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-success" ng-click="customersUpdateController.update(customer); ok()">Confirm</button>
+        <button class="btn btn-success" ng-click="customersUpdateController.update(customer); ok(updateCustomerForm.$valid)"
+                ng-disabled="updateCustomerForm.$invalid">Confirm</button>
         <button class="btn btn-warning" ng-click="cancel()">Back</button>
         <!--<div class="form-group">-->
-        <!--<input type="submit" value="Update" cla ss="btn btn-default">-->
         <!--</div>-->
 
     </div>
