@@ -52,13 +52,81 @@ customersApp.controller('CustomersController', ['$scope', '$stateParams', 'Authe
             });
         };
 
+        this.modelCreate = function (size, customer) {
+
+            var modalInstance = $modal.open({
+                templateUrl: 'modules/customers/views/create-customer.client.view.html',
+                controller: function ($scope, $modalInstance) {
+                    //console.log(customer)
+                    //$scope.customer = customer;
+                    $scope.ok = function (formValid) {
+                        if (formValid) {
+                            $modalInstance.close();
+                        }
+                    }
+                    $scope.cancel = function () {
+                        $modalInstance.dismiss('back');
+                    }
+                },
+                size: size,
+                resolve: {
+                    customer: function () {
+                        return customer;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (customer) {
+                //console.log(customer)
+                $scope.selected = customer;
+            }, function () {
+                $log.info('Modal dismissed at: ' + new Date());
+            });
+        };
+
     }
 ]);
 
-//customersApp.controller('CustomersCreateController', ['$scope', 'Customers',
-//    function ($scope, Customers) {
-//    }
-//]);
+customersApp.controller('CustomersCreateController', ['$scope', 'Customers',
+    function ($scope, Customers) {
+        this.customer = {};
+        this.create = function (obj) {
+            console.log(this.customer)
+            // Create new Customer object
+            var customer = new Customers({
+                firstName: this.firstName,
+                surname: this.surname,
+                suburb: this.suburb,
+                country: this.country,
+                industry: this.industry,
+                email: this.email,
+                phone: this.phone,
+                referred: this.referred,
+                channel: this.channel,
+
+            });
+
+            // Redirect after save
+            customer.$save(function (response) {
+                
+                //$location.path('customers/' + response._id);
+
+                // Clear form fields
+                this.firstName = '';
+                this.surname = '';
+                this.suburb = '';
+                this.country = '';
+                this.industry = '';
+                this.email = '';
+                this.phone = '';
+                this.referred = false;
+                this.channel = '';
+            }, function (errorResponse) {
+                $scope.error = errorResponse.data.message;
+            });
+        }
+    }
+]);
 
 customersApp.controller('CustomersUpdateController', ['$scope', '$modal', 'Customers',
     function ($scope, $modal, Customers) {
@@ -78,7 +146,7 @@ customersApp.directive('customersList', [function () {
         restrict: 'E',
         transclude: true,
         templateUrl: 'modules/customers/views/customers-list-template.html',
-        link: function(scope, element, attrs){
+        link: function (scope, element, attrs) {
 
         }
     }

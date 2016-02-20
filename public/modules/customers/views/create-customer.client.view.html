@@ -1,9 +1,9 @@
-<section data-ng-controller="CustomersController">
-    <div class="page-header">
-        <h1>New Customer</h1>
+<section data-ng-controller="CustomersCreateController as customersCreateController">
+    <div class="modal-header">
+        <h3 class="modal-title">New customer</h3>
     </div>
-    <div class="col-md-12">
-        <form class="form-horizontal" data-ng-submit="create()" novalidate>
+    <div class="modal-body">
+        <form name="createCustomerForm">
             <fieldset>
                 <div class="row">
                     <div class="form-group">
@@ -13,35 +13,36 @@
                         </div>
                     </div>
                     <div class="col-sm-6 text-center">
-                        <i class="glyphicon glyphicon-user custom-profile" ng-class="{'text-primary' : referred, 'text-danger': !referred}"></i>
+                        <i class="glyphicon glyphicon-user custom-profile"
+                           ng-class="{'text-primary' : customersCreateController.customer.referred, 'text-danger': !customersCreateController.customer.referred}"></i>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label class="control-label" for="firstName">First Name</label>
 
                             <div class="controls">
-                                <input type="text" data-ng-model="firstName" id="firstName" class="form-control">
+                                <input type="text" data-ng-model="customersCreateController.customer.firstName" id="firstName" class="form-control" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label" for="surname">Surname</label>
 
                             <div class="controls">
-                                <input type="text" data-ng-model="surname" id="surname" class="form-control">
+                                <input type="text" data-ng-model="customersCreateController.customer.surname" id="surname" class="form-control" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label" for="Suburb">Suburb</label>
 
                             <div class="controls">
-                                <input type="text" data-ng-model="suburb" id="suburb" class="form-control">
+                                <input type="text" data-ng-model="customersCreateController.customer.suburb" id="suburb" class="form-control">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label" for="country">Country</label>
 
                             <div class="controls">
-                                <input type="text" data-ng-model="country" id="country" class="form-control">
+                                <input type="text" data-ng-model="customersCreateController.customer.country" id="country" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -52,14 +53,14 @@
                             <label class="control-label" for="phone">Phone</label>
 
                             <div class="controls">
-                                <input type="text" data-ng-model="phone" id="phone" class="form-control">
+                                <input type="text" data-ng-model="customersCreateController.customer.phone" id="phone" class="form-control">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label" for="email">Email</label>
 
                             <div class="controls">
-                                <input type="text" data-ng-model="email" id="email" class="form-control">
+                                <input type="text" data-ng-model="customersCreateController.customer.email" id="email" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -68,8 +69,8 @@
                             <label class="control-label" for="referred">Referred</label>
 
                             <div class="controls">
-                            <input type="checkbox" data-ng-model="referred" id="referred"
-                                   class="form-control checkbox-left">
+                                <input type="checkbox" data-ng-model="customersCreateController.customer.referred" id="referred"
+                                       class="form-control checkbox-left">
                             </div>
 
                         </div>
@@ -77,7 +78,7 @@
                             <label class="control-label" for="channel">Channel</label>
 
                             <div class="controls">
-                                <input type="text" data-ng-model="channel" id="channel" class="form-control">
+                                <input type="text" data-ng-model="customersCreateController.customer.channel" id="channel" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -88,18 +89,8 @@
                             <label class="control-label" for="industry">Industry</label>
 
                             <div class="controls">
-                                <input type="text" data-ng-model="industry" id="industry" class="form-control">
+                                <input type="text" data-ng-model="customersCreateController.customer.industry" id="industry" class="form-control">
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-lg btn-success">
-                                Save & Ckise
-                            </button>
-                            <button type="reset" class="btn btn-lg btn-warning">
-                                Cancel
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -112,6 +103,17 @@
                 <!--<strong data-ng-bind="error"></strong>-->
                 <!--</div>-->
             </fieldset>
+
         </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-success"
+                ng-click="customersCreateController.create(); ok(createCustomerForm.$valid)"
+                ng-disabled="createCustomerForm.$invalid">Confirm
+        </button>
+        <button class="btn btn-warning" ng-click="cancel()">Back</button>
+        <!--<div class="form-group">-->
+        <!--</div>-->
+
     </div>
 </section>
