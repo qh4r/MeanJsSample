@@ -1,9 +1,9 @@
-<section data-ng-controller="CustomersUpdateController as customersEditController">
+<section data-ng-controller="CustomersUpdateController as customersUpdateController">
     <div class="modal-header">
         <h3 class="modal-title">Edit Customer</h3>
     </div>
     <div class="modal-body">
-        <form data-ng-submit="update()" novalidate>
+        <form>
             <fieldset>
                 <div class="row">
                     <div class="form-group">
@@ -108,10 +108,10 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-success" ng-click="ok()">Confirm</button>
+        <button class="btn btn-success" ng-click="customersUpdateController.update(customer); ok()">Confirm</button>
         <button class="btn btn-warning" ng-click="cancel()">Back</button>
         <!--<div class="form-group">-->
-        <!--<input type="submit" value="Update" class="btn btn-default">-->
+        <!--<input type="submit" value="Update" cla ss="btn btn-default">-->
         <!--</div>-->
 
     </div>
