@@ -1,11 +1,18 @@
 'use strict';
 var customersApp = angular.module('customers');
+var channelOptions = [
+    {id: '1', value: 'facebook'},
+    {id: '2', value: 'twitter'},
+    {id: '3', value: 'snapchat'},
+    {id: '4', value: 'instagram'},
+    {id: '5', value: 'email'}
+];
 // Customers controller
 customersApp.controller('CustomersController', ['$scope', '$stateParams', 'Authentication', 'Customers', '$modal', '$log', '$location',
     function ($scope, $stateParams, Authentication, Customers, $modal, $log, $location) {
         this.authentication = Authentication;
         var customersController = this;
-        this.refreshCustomers = function() {
+        this.refreshCustomers = function () {
             customersController.customers = Customers.query();
         }
 
@@ -31,6 +38,7 @@ customersApp.controller('CustomersController', ['$scope', '$stateParams', 'Authe
                 controller: function ($scope, $modalInstance, customer) {
                     //console.log(customer)
                     $scope.customer = customer;
+                    console.log(customer)
                     $scope.ok = function (formValid) {
                         if (formValid) {
                             $modalInstance.close($scope.customer);
@@ -62,7 +70,7 @@ customersApp.controller('CustomersController', ['$scope', '$stateParams', 'Authe
                 templateUrl: 'modules/customers/views/create-customer.client.view.html',
                 controller: function ($scope, $modalInstance) {
                     //console.log(customer)
-                    //$scope.customer = customer;
+                    $scope.customer = customer;
                     $scope.ok = function (formValid) {
                         if (formValid) {
                             $modalInstance.close();
@@ -109,9 +117,11 @@ customersApp.controller('CustomersController', ['$scope', '$stateParams', 'Authe
 customersApp.controller('CustomersCreateController', ['$scope', 'Customers', 'Notify',
     function ($scope, Customers, Notify) {
         var that = this;
+        $scope.selectedItem = {id:null};
+        $scope.channelOptions = channelOptions;
+
         this.customer = {};
         this.create = function (obj) {
-            console.log(this.customer)
             // Create new Customer object
             var newCustomer = new Customers({
                 firstName: this.customer.firstName,
@@ -122,8 +132,7 @@ customersApp.controller('CustomersCreateController', ['$scope', 'Customers', 'No
                 email: this.customer.email,
                 phone: this.customer.phone,
                 referred: this.customer.referred,
-                channel: this.customer.channel,
-
+                channel: $scope.selectedItem.id,
             });
             console.log(newCustomer)
 
@@ -152,25 +161,31 @@ customersApp.controller('CustomersCreateController', ['$scope', 'Customers', 'No
 
 customersApp.controller('CustomersUpdateController', ['$scope', '$modal', 'Customers',
     function ($scope, $modal, Customers) {
+        console.log('ze scopa', $scope.customer);
+        $scope.selectedItem = $scope.customer.channel ? channelOptions[$scope.customer.channel - 1] : {id:null};
         this.update = function (newCustomer) {
             var customer = newCustomer;
+            customer.channel = $scope.selectedItem.id;
             customer.$update(function () {
             }, function (errorResponse) {
                 $scope.error = errorResponse.data.message;
             });
         }
 
+        $scope.channelOptions = channelOptions;
+        $scope.channelOptions = channelOptions;
+
     }
 ]);
 
-customersApp.directive('customersList', ['Notify', 'Customers',function (Notify, Customers) {
+customersApp.directive('customersList', ['Notify', 'Customers', function (Notify, Customers) {
     return {
         restrict: 'E',
         transclude: true,
         templateUrl: 'modules/customers/views/customers-list-template.html',
         link: function (scope, element, attrs) {
 
-            Notify.getMsg('NewCustomer', function(event, data){
+            Notify.getMsg('NewCustomer', function (event, data) {
                 console.log('gotMessage', data);
                 scope.customersCtrl.refreshCustomers();
             })
