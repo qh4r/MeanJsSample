@@ -4,9 +4,13 @@ var customersApp = angular.module('customers');
 customersApp.controller('CustomersController', ['$scope', '$stateParams', 'Authentication', 'Customers', '$modal', '$log', '$location',
     function ($scope, $stateParams, Authentication, Customers, $modal, $log, $location) {
         this.authentication = Authentication;
+        var customersController = this;
+        function refreshCustomers() {
+            customersController.customers = Customers.query();
+        }
 
+        refreshCustomers();
 
-        this.customers = Customers.query();
         this.filterCustomers = function (search) {
             return function (val) {
                 return !search ? val : (val.firstName.indexOf(search) > -1)
@@ -77,11 +81,26 @@ customersApp.controller('CustomersController', ['$scope', '$stateParams', 'Authe
             });
 
             modalInstance.result.then(function (customer) {
-                //console.log(customer)
-                $scope.selected = customer;
-            }, function () {
+                refreshCustomers();
+            }, function (asd) {
                 $log.info('Modal dismissed at: ' + new Date());
             });
+        };
+
+        this.remove = function (customer) {
+            if (customer) {
+                customer.$remove();
+
+                for (var i in this.customers) {
+                    if (this.customers [i] === customer) {
+                        this.customers.splice(i, 1);
+                    }
+                }
+            } else {
+                this.customer.$remove(function () {
+                    //$location.path('customers');
+                });
+            }
         };
 
     }
@@ -89,38 +108,40 @@ customersApp.controller('CustomersController', ['$scope', '$stateParams', 'Authe
 
 customersApp.controller('CustomersCreateController', ['$scope', 'Customers',
     function ($scope, Customers) {
+        var that = this;
         this.customer = {};
         this.create = function (obj) {
             console.log(this.customer)
             // Create new Customer object
-            var customer = new Customers({
-                firstName: this.firstName,
-                surname: this.surname,
-                suburb: this.suburb,
-                country: this.country,
-                industry: this.industry,
-                email: this.email,
-                phone: this.phone,
-                referred: this.referred,
-                channel: this.channel,
+            var newCustomer = new Customers({
+                firstName: this.customer.firstName,
+                surname: this.customer.surname,
+                suburb: this.customer.suburb,
+                country: this.customer.country,
+                industry: this.customer.industry,
+                email: this.customer.email,
+                phone: this.customer.phone,
+                referred: this.customer.referred,
+                channel: this.customer.channel,
 
             });
+            console.log(newCustomer)
 
             // Redirect after save
-            customer.$save(function (response) {
-                
+            newCustomer.$save(function (response) {
+                console.log(response)
                 //$location.path('customers/' + response._id);
-
+                //$scope.customers.push(response);
                 // Clear form fields
-                this.firstName = '';
-                this.surname = '';
-                this.suburb = '';
-                this.country = '';
-                this.industry = '';
-                this.email = '';
-                this.phone = '';
-                this.referred = false;
-                this.channel = '';
+                that.customer.firstName = '';
+                that.customer.surname = '';
+                that.customer.suburb = '';
+                that.customer.country = '';
+                that.customer.industry = '';
+                that.customer.email = '';
+                that.customer.phone = '';
+                that.customer.referred = false;
+                that.customer.channel = '';
             }, function (errorResponse) {
                 $scope.error = errorResponse.data.message;
             });
@@ -152,41 +173,6 @@ customersApp.directive('customersList', [function () {
     }
 }]);
 
-//// Create new Customer
-//$scope.create = function () {
-//    // Create new Customer object
-//    var customer = new Customers({
-//        firstName: this.firstName,
-//        surname: this.surname,
-//        suburb: this.suburb,
-//        country: this.country,
-//        industry: this.industry,
-//        email: this.email,
-//        phone: this.phone,
-//        referred: this.referred,
-//        channel: this.channel,
-//
-//    });
-//
-//    // Redirect after save
-//    customer.$save(function (response) {
-//        $location.path('customers/' + response._id);
-//
-//        // Clear form fields
-//        $scope.firstName = '';
-//        $scope.surname = '';
-//        $scope.suburb = '';
-//        $scope.country = '';
-//        $scope.industry = '';
-//        $scope.email = '';
-//        $scope.phone = '';
-//        $scope.referred = false;
-//        $scope.channel = '';
-//    }, function (errorResponse) {
-//        $scope.error = errorResponse.data.message;
-//    });
-//};
-//
 //// Remove existing Customer
 //$scope.remove = function (customer) {
 //    if (customer) {
@@ -204,14 +190,5 @@ customersApp.directive('customersList', [function () {
 //    }
 //};
 //
-//// Update existing Customer
-//$scope.update = function () {
-//    var customer = $scope.customer;
-//
-//    customer.$update(function () {
-//        $location.path('customers/' + customer._id);
-//    }, function (errorResponse) {
-//        $scope.error = errorResponse.data.message;
-//    });
-//};
+
 
