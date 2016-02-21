@@ -5,11 +5,11 @@ customersApp.controller('CustomersController', ['$scope', '$stateParams', 'Authe
     function ($scope, $stateParams, Authentication, Customers, $modal, $log, $location) {
         this.authentication = Authentication;
         var customersController = this;
-        function refreshCustomers() {
+        this.refreshCustomers = function() {
             customersController.customers = Customers.query();
         }
 
-        refreshCustomers();
+        this.refreshCustomers();
 
         this.filterCustomers = function (search) {
             return function (val) {
@@ -81,7 +81,7 @@ customersApp.controller('CustomersController', ['$scope', '$stateParams', 'Authe
             });
 
             modalInstance.result.then(function (customer) {
-                refreshCustomers();
+                //refreshCustomers();
             }, function (asd) {
                 $log.info('Modal dismissed at: ' + new Date());
             });
@@ -106,8 +106,8 @@ customersApp.controller('CustomersController', ['$scope', '$stateParams', 'Authe
     }
 ]);
 
-customersApp.controller('CustomersCreateController', ['$scope', 'Customers',
-    function ($scope, Customers) {
+customersApp.controller('CustomersCreateController', ['$scope', 'Customers', 'Notify',
+    function ($scope, Customers, Notify) {
         var that = this;
         this.customer = {};
         this.create = function (obj) {
@@ -129,7 +129,8 @@ customersApp.controller('CustomersCreateController', ['$scope', 'Customers',
 
             // Redirect after save
             newCustomer.$save(function (response) {
-                console.log(response)
+                //console.log(response)
+                Notify.sendMsg('NewCustomer', {id: response._id});
                 //$location.path('customers/' + response._id);
                 //$scope.customers.push(response);
                 // Clear form fields
@@ -162,13 +163,17 @@ customersApp.controller('CustomersUpdateController', ['$scope', '$modal', 'Custo
     }
 ]);
 
-customersApp.directive('customersList', [function () {
+customersApp.directive('customersList', ['Notify', 'Customers',function (Notify, Customers) {
     return {
         restrict: 'E',
         transclude: true,
         templateUrl: 'modules/customers/views/customers-list-template.html',
         link: function (scope, element, attrs) {
 
+            Notify.getMsg('NewCustomer', function(event, data){
+                console.log('gotMessage', data);
+                scope.customersCtrl.refreshCustomers();
+            })
         }
     }
 }]);
